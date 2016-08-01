@@ -1,0 +1,79 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+
+description: >
+  Set up a local docker container & spin up the manager
+
+
+inputs:
+  manager_version:
+    required: true
+    default: 3.4
+    description: >
+      The version of the manager to install.
+      If this is a valid local path that will be used.
+
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
+  - http://www.getcloudify.org/spec/fabric-plugin/1.3/plugin.yaml
+  - ../cloudify-dockercompute-plugin/plugin.yaml
+
+
+node_types:
+  manager:
+    derived_from: cloudify.nodes.SoftwareComponent
+    properties:
+      version:
+        required: true
+
+
+node_templates:
+  manager_container:
+    type: cloudify.nodes.docker.Compute
+    properties:
+      image: centos
+      expose:
+        - 22
+        - 80
+        - 443
+        - 3000
+        - 4369
+        - 5671
+        - 5672
+        - 8083
+        - 8086
+        - 8090
+        - 8099
+        - 8100
+        - 9001
+        - 9200
+        - 9300
+        - 9999
+        - 15672
+        - 41888
+        - 53229
+        - 55672
+      install_agent: false
+
+  manager_installation:
+    type: manager
+    properties:
+      version: { get_input: manager_version }
+    relationships:
+      - type: cloudify.relationships.contained_in
+        target: manager_container
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: fabric.fabric_plugin.tasks.run_task
+          inputs:
+            tasks_file: scripts/tasks.py
+            task_name: create
+            task_properties: {}
+        delete:
+          implementation: fabric.fabric_plugin.tasks.run_task
+          inputs:
+            tasks_file: scripts/tasks.py
+            task_name: delete
+
