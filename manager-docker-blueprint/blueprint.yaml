@@ -32,7 +32,7 @@ node_templates:
   manager_container:
     type: cloudify.nodes.docker.Compute
     properties:
-      image: centos
+      image: cloudify/centos:7
       expose:
         - 22
         - 80
@@ -70,10 +70,19 @@ node_templates:
           inputs:
             tasks_file: scripts/tasks.py
             task_name: create
-            task_properties: {}
+            task_properties:
+              version: { get_attribute: [manager_installation, version] }
+              manager_ip: { get_attribute: [manager_container, ip] }
+              key_filename:  { get_attribute: [manager_container, cloudify_agent, key] }
+            fabric_env:
+              user: root
+              key_filename:  { get_attribute: [manager_container, cloudify_agent, key] }
         delete:
           implementation: fabric.fabric_plugin.tasks.run_task
           inputs:
             tasks_file: scripts/tasks.py
             task_name: delete
+            fabric_env:
+              user: root
+              key_filename:  { get_attribute: [manager_container, cloudify_agent, key] }
 
