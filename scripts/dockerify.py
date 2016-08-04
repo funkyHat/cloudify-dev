@@ -31,15 +31,16 @@ PUBLISH = ['80:80', '443:443', '5671:5671']
 
 def main(args=None):
     parser = argparse.ArgumentParser(
-        description="Deploy a simple manager blueprint into a local docker container",
+        description="Deploy a simple manager blueprint "
+                    "into a local docker container",
         )
     parser.add_argument('path', nargs='?', default='.')
     parser.add_argument(
-        '--docker_context', 
+        '--docker_context',
         default=os.path.join(os.path.dirname(__file__), 'dockerify'),
         )
     parser.add_argument(
-        '--docker_tag', 
+        '--docker_tag',
         default='cloudify/centos-manager:7',
         )
     parser.add_argument(
@@ -56,7 +57,7 @@ def main(args=None):
     if not os.path.isfile(args.ssh_key):
         raise ValueError(
             "you need to create an SSH key (see man ssh-keygen) first")
-    
+
     id, ip = create_container(args.docker_context, args.docker_tag)
     print("Created container: " + id)
 
