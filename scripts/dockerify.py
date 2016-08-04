@@ -26,6 +26,8 @@ import yaml
 
 
 EXPOSE = [22, 80, 443, 5671]
+
+# 22 isn't needed here as the user can access SSH via the internal address
 PUBLISH = ['80:80', '443:443', '5671:5671']
 
 
