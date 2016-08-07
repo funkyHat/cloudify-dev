@@ -72,8 +72,8 @@ def create_container(context, tag):
     # Create the container
     container_id = docker.run(
             ['--privileged', '--detach'] +
-            ['-e{}'.format(p) for p in EXPOSE] +
-            ['-p{}'.format(p) for p in PUBLISH] +
+            ['--expose={}'.format(p) for p in EXPOSE] +
+            ['--publish={}'.format(p) for p in PUBLISH] +
             [tag],
             ).strip()
 
