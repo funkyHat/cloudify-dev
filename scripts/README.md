@@ -22,7 +22,7 @@ $ python dockerify.py cloudify-manager-blueprints/simple-manager-blueprint.yaml
 $ python dockerify.py --help
 ```
 
-The script will open ports `80`, `443`, and `5761` and forward those ports from your host to the container ("publish" them, in docker's terms).
+The script will open ports `80`, `443`, and `5671` and forward those ports from your host to the container ("publish" them, in docker's terms).
 It will also open port `22` but only locally, so you will need to use the docker local IP address to SSH in to the container
 (this is printed just before the script finishes, or it can be found by running `docker inspect ${container_name} | grep IPAddress`).
 
