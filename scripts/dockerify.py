@@ -38,16 +38,16 @@ def main(args=None):
         )
     parser.add_argument('path', nargs='?', default='.')
     parser.add_argument(
-        '--docker_context',
-        default=os.path.join(os.path.dirname(__file__), 'dockerify'),
+        '--ssh-key',
+        default=os.path.expanduser('~/.ssh/id_rsa'),
         )
     parser.add_argument(
         '--docker_tag',
         default='cloudify/centos-manager:7',
         )
     parser.add_argument(
-        '--ssh-key',
-        default=os.path.expanduser('~/.ssh/id_rsa'),
+        '--docker_context',
+        default=os.path.join(os.path.dirname(__file__), 'dockerify'),
         )
     parser.add_argument(
         '--dockerfile',
