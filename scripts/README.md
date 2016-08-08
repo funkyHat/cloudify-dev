@@ -1,10 +1,10 @@
 # dockerify.py
 
-In order to quickly test out changes to manager components, you can use the `dockerify.py` script to spin up a manager as a docker container.
+In order to quickly test changes to manager components, you can use the `dockerify.py` script to spin up a manager as a docker container.
 
 
 ## Prerequisites:
-- docker
+- [docker](https://www.docker.com/)
     - (your user must be authorized to use docker: `adduser $USER docker`)
 - pyyaml
     - `pip install pyyaml`
@@ -23,7 +23,8 @@ $ python dockerify.py --help
 ```
 
 The script will open ports `80`, `443`, and `5761` and forward those ports from your host to the container ("publish" them, in docker's terms).
-It will also open port `22` but only locally, so you will need to use the docker local IP address to SSH in to the container.
+It will also open port `22` but only locally, so you will need to use the docker local IP address to SSH in to the container
+(this is printed just before the script finishes, or it can be found by running `docker inspect ${container_name} | grep IPAddress`).
 
 Your `id_rsa` key (or another key that you provided, see `python dockerify.py --help`) will allow you to SSH in to the `root` account in the container, or you can use any docker commands you are comfortable with.
 
