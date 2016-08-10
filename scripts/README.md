@@ -6,6 +6,8 @@ In order to quickly test changes to manager components, you can use the `dockeri
 ## Prerequisites:
 - [docker](https://www.docker.com/)
     - (your user must be authorized to use docker: `adduser $USER docker`)
+- `cfy` in your `$PATH`
+    - (running the `install_packages.py` script will sort that out for you, but you may also wish to refer to the [dev environment setup guide](guides/dev-environment))
 - pyyaml
     - `pip install pyyaml`
 - a local copy of a manager blueprint
