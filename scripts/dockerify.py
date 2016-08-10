@@ -20,6 +20,7 @@ import argparse
 import os
 from functools import partial
 from subprocess import check_call, check_output, CalledProcessError
+from tempfile import mkdtemp
 from time import sleep
 
 import yaml
@@ -38,6 +39,7 @@ def main(args=None):
                     "into a local docker container",
         )
     parser.add_argument('path', nargs='?', default='simple-manager-blueprint.yaml')
+
     parser.add_argument(
         '--ssh-key',
         default=os.path.expanduser('~/.ssh/id_rsa'),
@@ -50,6 +52,12 @@ def main(args=None):
         '--docker-context',
         default=os.path.join(os.path.dirname(__file__), 'dockerify'),
         )
+
+    parser.add_argument(
+        '-i', '--inputs', nargs='*',
+        help="Extra inputs arguments that will be passed through to cfy",
+        )
+
     args = parser.parse_args(args)
 
     files = {
@@ -66,7 +74,7 @@ def main(args=None):
 
     ssh_swap(id, ip, args.ssh_key)
 
-    install(args.path, id, ip, args.ssh_key)
+    install(args.path, id, ip, args.ssh_key, args.inputs)
 
 
 def create_container(context, tag):
@@ -127,10 +135,11 @@ def ssh_swap(id, ip, keyname):
             ])
 
 
-def install(path, id, ip, key_filename):
+def install(path, id, ip, key_filename, inputs):
 
+    tmpdir = mkdtemp('dockerify')
     # Write the inputs file
-    with open('docker-bootstrap-inputs.yaml', 'w') as f:
+    with open(os.path.join(tmpdir, 'docker-bootstrap-inputs.yaml'), 'w') as f:
         f.write(yaml.safe_dump({
                     'public_ip': ip,
                     'private_ip': ip,
@@ -146,7 +155,9 @@ def install(path, id, ip, key_filename):
     check_call([
             'cfy', 'bootstrap', '--install-plugins',
             '-p', path,
-            '-i', 'docker-bootstrap-inputs.yaml'])
+            '-i', os.path.join(tmpdir, 'docker-bootstrap-inputs.yaml')] +
+            ['-i {}'.format(i) for i in inputs]
+            )
 
 
 class docker(object):
