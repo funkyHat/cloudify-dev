@@ -107,10 +107,10 @@ def ssh_swap(id, ip, keyname):
     You get the host key in, the client key out
     in out in out shake it all about
     """
-    server_pubkey_file = '/etc/ssh/ssh_host_rsa_key'
+    server_pubkey_file = '/etc/ssh/ssh_host_rsa_key.pub'
     # once this file exists the SSHD in the container is sufficiently ready
     server_pubkey = _wait_for_file(id, server_pubkey_file)
-    with open(os.path.expanduser('~/.ssh/known_hosts'), 'w+') as f:
+    with open(os.path.expanduser('~/.ssh/known_hosts'), 'a+') as f:
         f.write('{ip} ssh-rsa {key}\n'.format(
                 ip=ip,
                 key=server_pubkey))
