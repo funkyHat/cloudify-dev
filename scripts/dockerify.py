@@ -107,16 +107,11 @@ def _wait_for_file(container_id, file):
 
 def ssh_swap(id, ip, keyname):
     """
-    You get the host key in, the client key out
-    in out in out shake it all about
+    Inject the user's SSH key into root's authorized_keys
+    Also clears out references to the container's IP in the local known_hosts
     """
-    server_pubkey_file = '/etc/ssh/ssh_host_rsa_key.pub'
-    # once this file exists the SSHD in the container is sufficiently ready
-    server_pubkey = _wait_for_file(id, server_pubkey_file)
-    with open(os.path.expanduser('~/.ssh/known_hosts'), 'a+') as f:
-        f.write('{ip} {key}'.format(
-                ip=ip,
-                key=server_pubkey))
+    # Remove old keys referring to the container's IP
+    check_call(['ssh-keygen', '-R', ip])
 
     # new container shouldn't have an authorized_keys file yet
     try:
