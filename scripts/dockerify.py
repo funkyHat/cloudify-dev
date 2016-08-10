@@ -114,7 +114,7 @@ def ssh_swap(id, ip, keyname):
     # once this file exists the SSHD in the container is sufficiently ready
     server_pubkey = _wait_for_file(id, server_pubkey_file)
     with open(os.path.expanduser('~/.ssh/known_hosts'), 'a+') as f:
-        f.write('{ip} ssh-rsa {key}\n'.format(
+        f.write('{ip} {key}'.format(
                 ip=ip,
                 key=server_pubkey))
 
