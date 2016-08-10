@@ -42,17 +42,12 @@ def main(args=None):
         default=os.path.expanduser('~/.ssh/id_rsa'),
         )
     parser.add_argument(
-        '--docker_tag',
+        '--docker-tag',
         default='cloudify/centos-manager:7',
         )
     parser.add_argument(
-        '--docker_context',
+        '--docker-context',
         default=os.path.join(os.path.dirname(__file__), 'dockerify'),
-        )
-    parser.add_argument(
-        '--dockerfile',
-        default='https://github.com/CentOS/sig-cloud-instance-images/blob/'
-                '9681bb924c70a60dc4042dbc5fc3ed6c27aa3e1c/docker/Dockerfile',
         )
     args = parser.parse_args(args)
 
