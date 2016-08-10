@@ -36,7 +36,7 @@ def main(args=None):
         description="Deploy a simple manager blueprint "
                     "into a local docker container",
         )
-    parser.add_argument('path', nargs='?', default='.')
+    parser.add_argument('path', nargs='?', default='simple-manager-blueprint.yaml')
     parser.add_argument(
         '--ssh-key',
         default=os.path.expanduser('~/.ssh/id_rsa'),
