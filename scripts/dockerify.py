@@ -85,6 +85,9 @@ def create_container(context, tag):
         container_id,
         ]).strip()
 
+    # Launch DBUS because restservice seems to try to access it weirdly
+    docker.exc([container_id, 'systemctl', 'start', 'dbus'])
+
     return container_id, container_ip
 
 
