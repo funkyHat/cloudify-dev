@@ -27,8 +27,9 @@ import yaml
 
 EXPOSE = [22, 80, 443, 5671]
 
-# 22 isn't needed here as the user can access SSH via the internal address
-PUBLISH = ['80:80', '443:443', '5671:5671']
+# Add forwarding specifications here if you want to open ports on the host
+# (see man docker-run)
+PUBLISH = []
 
 
 def main(args=None):
