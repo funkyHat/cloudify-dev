@@ -51,9 +51,14 @@ def main(args=None):
         )
     args = parser.parse_args(args)
 
-    if not os.path.isfile(args.ssh_key):
-        raise ValueError(
-            "you need to create an SSH key (see man ssh-keygen) first")
+    files = {
+        args.path: "you must specify a path to a manager blueprint",
+        args.ssh_key: "you need to create a key (see man ssh-keygen) first",
+        }
+
+    for path, message in files.items():
+        if not os.path.isfile(path):
+            raise ValueError(message)
 
     id, ip = create_container(args.docker_context, args.docker_tag)
     print("Created container: " + id)
