@@ -54,7 +54,8 @@ def main(args=None):
         )
 
     parser.add_argument(
-        '-i', '--inputs', nargs='*',
+        '-i', '--inputs',
+        nargs='*', default=[],
         help="Extra inputs arguments that will be passed through to cfy",
         )
 
